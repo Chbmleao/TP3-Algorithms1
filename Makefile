@@ -9,7 +9,7 @@ EXECUTABLE=tp03
 SRCS=main.cpp loja.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
-all: $(EXECUTABLE)
+all: $(EXECUTABLE) run
 
 $(EXECUTABLE): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $(EXECUTABLE) $(OBJS) $(LDLIBS)
@@ -28,5 +28,8 @@ distclean: clean
 
 test: $(EXECUTABLE)
 	bash run_tests.sh
+
+run: 
+	./tp03 < input.txt
 
 include .depend
