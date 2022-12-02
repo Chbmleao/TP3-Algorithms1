@@ -1,0 +1,2 @@
+main.o: main.cpp loja.hpp
+loja.o: loja.cpp loja.hpp
