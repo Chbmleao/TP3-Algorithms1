@@ -17,49 +17,52 @@ std::vector<int> createVector(int size) {
 }
 
 std::vector<std::vector<int>> createMatrix(int rows, int colums) {
-    std::vector<std::vector<int>> matrix(rows, std::vector<int>(colums, -1));
+    std::vector<std::vector<int>> matrix(rows, std::vector<int>(colums, 0));
     
     return matrix;
 }
 
-int getRollsAmountRecursive(int rollIndex, int totalValue, std::pair<int, int> valuesInterval) {
+int getRollsAmountRecursive(int rollIndex, std::pair<int, int> valuesInterval) {
     if(rollIndex == vectorSize) 
         return 0;
     
-    // if(DPmatrix[rollIndex][totalValue] != -1) {
-    //     return DPmatrix[rollIndex][totalValue];
-    // }
+    // if(DPmatrix[rollIndex][valuesInterval.first]) 
+    //     return DPmatrix[rollIndex][valuesInterval.first];
+    
+    // if(DPmatrix[rollIndex][valuesInterval.second])
+    //     return DPmatrix[rollIndex][valuesInterval.second];
 
-    std::pair<int, int> emptyInterval(-1, -1);
+    std::pair<int, int> emptyInterval(0, 0);
 
     // we can insert the element in the shelf or not
-    int rollsWithRollIndex = -1;
-    int rollsWithoutRollIndex = -1;
+    int rollsWithRollIndex = 0;
+    int rollsWithoutRollIndex = 0;
 
     // inserting the roll with rollIndex in the shelf
     // if the shelf doesnt contain rolls
     if(valuesInterval == emptyInterval) {
         rollsWithRollIndex =  getRollsAmountRecursive(
             rollIndex + 1, 
-            totalValue + values[rollIndex], 
             { values[rollIndex], values[rollIndex] }
-        ) + 1;
+        ) + 1; 
+        DPmatrix[rollIndex][valuesInterval.first] = rollsWithRollIndex;
+        DPmatrix[rollIndex][valuesInterval.second] = rollsWithRollIndex;
     } else {
         // if the element is greater than the shelf start
         if(values[rollIndex] > valuesInterval.first) {
             rollsWithRollIndex = getRollsAmountRecursive(
                 rollIndex + 1, 
-                totalValue + values[rollIndex], 
                 { values[rollIndex], valuesInterval.second }
             ) + 1;
+            DPmatrix[rollIndex][valuesInterval.first] = rollsWithRollIndex;
         } 
         // if the element is smaller than the shelf end
         else if(values[rollIndex] < valuesInterval.second) {
             rollsWithRollIndex = getRollsAmountRecursive(
                 rollIndex + 1, 
-                totalValue + values[rollIndex], 
                 { valuesInterval.first, values[rollIndex] }
             ) + 1;
+            DPmatrix[rollIndex][valuesInterval.second] = rollsWithRollIndex;
         } 
         // if the element is between the start and end of the shelf
         else {
@@ -69,36 +72,23 @@ int getRollsAmountRecursive(int rollIndex, int totalValue, std::pair<int, int> v
     
     // not inserting the roll with rollIndex in the shelf
     rollsWithoutRollIndex = getRollsAmountRecursive(
-                rollIndex + 1, 
-                totalValue, 
-                valuesInterval
+        rollIndex + 1, 
+        valuesInterval
     );
 
-
     if(rollsWithRollIndex > rollsWithoutRollIndex){
-        // std::cout << "[" << rollIndex << ", " << totalValue << "] ";
-        // if(DPmatrix[rollIndex][totalValue] != -1) {
-        //     std::cout << DPmatrix[rollIndex][totalValue] << " -> ";
-        // }
-        DPmatrix[rollIndex][totalValue] = rollsWithRollIndex;
-        // std::cout << DPmatrix[rollIndex][totalValue] << std::endl;
         return rollsWithRollIndex;
     }
-    
-    // std::cout << "[" << rollIndex << ", " << totalValue << "] ";
-    // if(DPmatrix[rollIndex][totalValue] != -1) {
-    //     std::cout << DPmatrix[rollIndex][totalValue] << " -> ";
-    // }
-    DPmatrix[rollIndex][totalValue] = rollsWithoutRollIndex;
-    // std::cout << DPmatrix[rollIndex][totalValue] << std::endl;
-    return rollsWithoutRollIndex;
 
+    DPmatrix[rollIndex][valuesInterval.first] = rollsWithoutRollIndex;
+    DPmatrix[rollIndex][valuesInterval.second] = rollsWithoutRollIndex;
+    return rollsWithoutRollIndex;
 }
 
 int getRollsAmount() {
-    std::pair<int, int> emptyInterval(-1, -1);
+    std::pair<int, int> emptyInterval(0, 0);
     
-    return getRollsAmountRecursive(0, 0, emptyInterval);
+    return getRollsAmountRecursive(0, emptyInterval);
 }
 
 void readFile() {
@@ -119,19 +109,20 @@ void readFile() {
         // std::cout << std::endl;
         // std::cout << std::endl;
 
-        int valuesSum = 0;
+        int greaterValue = 0;
 
         for (int i = 0; i < numRolls; i++) {
-            valuesSum += values[i];
+            if(values[i] > greaterValue)
+                greaterValue = values[i];
         }
         
-        DPmatrix = createMatrix(numRolls, valuesSum+1);
+        DPmatrix = createMatrix(numRolls, numRolls+1);
 
         int rollsAmount = getRollsAmount();
 
         // for (int i = 0; i < numRolls; i++) {
         //     for (int j = 0; j < valuesSum+1; j++) {
-        //         if(DPmatrix[i][j] != -1)
+        //         if(DPmatrix[i][j] != 0)
         //             std::cout << DPmatrix[i][j] << " ";
         //     }
         //     std::cout << std::endl;
