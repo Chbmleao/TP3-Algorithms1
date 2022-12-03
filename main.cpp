@@ -6,14 +6,7 @@
 
 int main() {
   
-  //make a vector of ints
-  std::vector<int> v;
-
-  //make a map of strings to ints
-  std::map<std::string, int> m;
-
-  // call a function in another file
-  test();
+  readFile();
 
   return(0);
 }

@@ -1,3 +1,5 @@
 test_files
+*.txt
 *.o
+*.out
 tp03
