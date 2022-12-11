@@ -25,12 +25,11 @@ std::vector<std::vector<int>> createMatrix(int rows, int colums) {
 int getRollsAmountRecursive(int rollIndex, std::pair<int, int> valuesInterval) {
     if(rollIndex == vectorSize) 
         return 0;
-    
-    // if(DPmatrix[rollIndex][valuesInterval.first]) 
-    //     return DPmatrix[rollIndex][valuesInterval.first];
-    
-    // if(DPmatrix[rollIndex][valuesInterval.second])
-    //     return DPmatrix[rollIndex][valuesInterval.second];
+
+    if(DPmatrix[valuesInterval.first][valuesInterval.second]) {
+        return DPmatrix[valuesInterval.first][valuesInterval.second];
+    }
+        
 
     std::pair<int, int> emptyInterval(0, 0);
 
@@ -45,8 +44,6 @@ int getRollsAmountRecursive(int rollIndex, std::pair<int, int> valuesInterval) {
             rollIndex + 1, 
             { values[rollIndex], values[rollIndex] }
         ) + 1; 
-        DPmatrix[rollIndex][valuesInterval.first] = rollsWithRollIndex;
-        DPmatrix[rollIndex][valuesInterval.second] = rollsWithRollIndex;
     } else {
         // if the element is greater than the shelf start
         if(values[rollIndex] > valuesInterval.first) {
@@ -54,7 +51,6 @@ int getRollsAmountRecursive(int rollIndex, std::pair<int, int> valuesInterval) {
                 rollIndex + 1, 
                 { values[rollIndex], valuesInterval.second }
             ) + 1;
-            DPmatrix[rollIndex][valuesInterval.first] = rollsWithRollIndex;
         } 
         // if the element is smaller than the shelf end
         else if(values[rollIndex] < valuesInterval.second) {
@@ -62,7 +58,6 @@ int getRollsAmountRecursive(int rollIndex, std::pair<int, int> valuesInterval) {
                 rollIndex + 1, 
                 { valuesInterval.first, values[rollIndex] }
             ) + 1;
-            DPmatrix[rollIndex][valuesInterval.second] = rollsWithRollIndex;
         } 
         // if the element is between the start and end of the shelf
         else {
@@ -77,11 +72,11 @@ int getRollsAmountRecursive(int rollIndex, std::pair<int, int> valuesInterval) {
     );
 
     if(rollsWithRollIndex > rollsWithoutRollIndex){
+        DPmatrix[valuesInterval.first][valuesInterval.second] = rollsWithRollIndex;
         return rollsWithRollIndex;
     }
 
-    DPmatrix[rollIndex][valuesInterval.first] = rollsWithoutRollIndex;
-    DPmatrix[rollIndex][valuesInterval.second] = rollsWithoutRollIndex;
+    DPmatrix[valuesInterval.first][valuesInterval.second] = rollsWithoutRollIndex;
     return rollsWithoutRollIndex;
 }
 
@@ -102,35 +97,25 @@ void readFile() {
 
         values = createVector(numRolls);
         vectorSize = numRolls;
-
-        // for (int i = 0; i < numRolls; i++) {
-        //     std::cout << values[i] << " ";
-        // }
-        // std::cout << std::endl;
-        // std::cout << std::endl;
-
-        int greaterValue = 0;
-
-        for (int i = 0; i < numRolls; i++) {
-            if(values[i] > greaterValue)
-                greaterValue = values[i];
-        }
         
-        DPmatrix = createMatrix(numRolls, numRolls+1);
+        DPmatrix = createMatrix(numRolls+1, numRolls+1);
 
         int rollsAmount = getRollsAmount();
 
-        // for (int i = 0; i < numRolls; i++) {
-        //     for (int j = 0; j < valuesSum+1; j++) {
-        //         if(DPmatrix[i][j] != 0)
-        //             std::cout << DPmatrix[i][j] << " ";
+        // std::cout << "n = " << numRolls << " -> ";
+        // std::cout << "chamadas recursivas: " << count;
+        // std::cout << " chamadas matriz: " << count2;
+        // std::cout << " atualizacao da matriz: " << count3 << std::endl;
+
+        // for (int i = 0; i < numRolls+1; i++)
+        // {
+        //     for (int j = 0; j < numRolls+1; j++)
+        //     {
+        //         std::cout << DPmatrix[i][j] << " ";
         //     }
-        //     std::cout << std::endl;
+        //     std::cout<<std::endl;
         // }
-
-        // std::cout << std::endl;
-        // std::cout << "-------------------------------------" << std::endl;
-
+        
         
         std::cout << rollsAmount << std::endl;
     }
