@@ -23,8 +23,7 @@ std::vector<int> createInvVector(int size) {
     return vect;
 }
 
-int longestIncreasingSubsequence(int size) {
-    int totalRolls = 0;
+void longestIncreasingSubsequence(int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < i; j++) {
             if(values[i] > values[j]) {
@@ -34,8 +33,7 @@ int longestIncreasingSubsequence(int size) {
     }
 }
 
-int longestDecreasingSubsequence(int size) {
-    int totalRolls = 0;
+void longestDecreasingSubsequence(int size) {
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < i; j++) {
             if(values[i] < values[j])
