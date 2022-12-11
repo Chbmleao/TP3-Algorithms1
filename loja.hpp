@@ -7,4 +7,3 @@ std::vector<int> createInvVector(int size);
 int longestIncreasingSubsequence(int size);
 int longestDecreasingSubsequence(int size);
 void readFile();
-int getRollsAmount();
