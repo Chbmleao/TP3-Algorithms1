@@ -9,7 +9,7 @@ EXECUTABLE=tp03
 SRCS=main.cpp loja.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
-all: $(EXECUTABLE) run
+all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $(EXECUTABLE) $(OBJS) $(LDLIBS)
