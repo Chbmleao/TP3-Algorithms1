@@ -13,7 +13,7 @@ for i in trivial.in easy.in medium.in hard.in
 do
     echo -n "Running test $i ... "
 
-    timeout 30 ./tp03 < test_files/$i > $i.out
+    timeout 120 ./tp03 < test_files/$i > $i.out
     if [ $? -eq 124 ]
     then
         echo "---> Timeout"

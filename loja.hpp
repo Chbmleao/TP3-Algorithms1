@@ -2,8 +2,8 @@
 #include <vector>
 #include <utility>
 
+int max(int x, int y);
+std::vector<int> createInvVector(int size);
+void longestIncreasingSubsequence(int size);
+void longestDecreasingSubsequence(int size);
 void readFile();
-std::vector<int> createVector(int size);
-std::vector<std::vector<int>> createMatrix(int rows, int colums);
-int getRollsAmount();
-int getRollsAmountRecursive(int rollIndex, int totalValue, std::pair<int, int> valuesInterval);
